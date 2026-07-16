@@ -105,7 +105,7 @@ A more complex case — jacket over top, paired with a skirt and knee-high boots
 
 #### Weakness 1: Low-contrast garment-to-garment boundaries
 
-![Boot pants boundary](assets/weakness_boot_pants_boundary.png)
+![Boot pants boundary](assets/hero_result.png)
 
 At the transition between dark pants and dark boots, the model shows minor discontinuities in the predicted mask. The root cause is low color/texture contrast between adjacent garments of similar dark tone, making the exact boundary genuinely ambiguous even visually.
 
