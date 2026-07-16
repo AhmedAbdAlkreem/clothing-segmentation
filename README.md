@@ -4,7 +4,6 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.1+-EE4C2C.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Dice Score](https://img.shields.io/badge/Dice%20Score-0.926-brightgreen.svg)
 ![Mean IoU](https://img.shields.io/badge/Mean%20IoU-0.878-brightgreen.svg)
 
@@ -32,13 +31,11 @@ Clothing segmentation sits at the core of virtual try-on technology — but most
 ---
 
 ## 📊 Results at a Glance
-
 | Metric | Score |
 |---|---|
 | Dice Score | **0.926** |
 | Mean IoU | **0.878** |
 | Pixel Accuracy | **0.976** |
-
 <p align="center">
   <img src="assets/validation_grid.png" width="700" alt="Validation results grid">
 </p>
@@ -46,6 +43,8 @@ Clothing segmentation sits at the core of virtual try-on technology — but most
 ---
 
 ## 🗂️ Project Structure
+
+```
 clothing_segmentation/
 ├── config.py
 ├── train.py
@@ -60,6 +59,8 @@ clothing_segmentation/
 ├── engine/
 ├── utils/
 └── checkpoints/
+```
+
 > 💡 **Naming note:** the dataset module is called `data_pipeline/`, not `datasets/` — this avoids a real collision with the installed HuggingFace `datasets` library. Full story in [Challenges](#-challenges--lessons-learned).
 
 ---
@@ -68,7 +69,7 @@ clothing_segmentation/
 
 ### 1. Clone & install
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/AhmedAbdAlkreem/clothing-segmentation
 cd clothing_segmentation
 pip install -r requirements.txt
 ```
