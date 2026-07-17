@@ -56,15 +56,52 @@ def visualize_prediction(
     plt.show()
     plt.close(fig)
 
+def overlay_mask_raw(image: np.ndarray, mask: np.ndarray, alpha: float = 0.45) -> np.ndarray:
+    """Overlays a red-tinted mask onto a plain (non-normalized) RGB image.
+    
+    Use this for inference.py, where the image is the original RGB image
+    (0-255 uint8), never passed through ImageNet normalization.
+    """
+    img_np = image.astype(np.uint8) if image.max() > 1 else (image * 255).astype(np.uint8)
+    mask_np = mask.astype(np.uint8)
 
-def overlay_mask(image: torch.Tensor, mask: torch.Tensor, alpha: float = 0.45) -> np.ndarray:
-    """Overlays a red-tinted mask onto the original image for intuitive display."""
-    img_np = (denormalize(image) * 255).astype(np.uint8)
-    mask_np = mask.squeeze().cpu().numpy().astype(np.uint8)
+    overlay = img_np.copy()
+    color = np.array([255, 0, 0], dtype=np.uint8)
 
-    color_mask = np.zeros_like(img_np)
-    color_mask[..., 0] = 255  # red channel
-    color_mask = color_mask * mask_np[..., None]
+    overlay[mask_np == 1] = (
+        img_np[mask_np == 1] * (1 - alpha) + color * alpha
+    ).astype(np.uint8)
 
-    overlay = (img_np * (1 - alpha) + color_mask * alpha).astype(np.uint8)
     return overlay
+
+def show_original_mask_overlay(
+    image: np.ndarray,
+    mask: np.ndarray,
+    overlay: np.ndarray,
+    save_path: Optional[Path] = None,
+) -> None:
+    """Displays original image, binary mask, and overlay side by side.
+    
+    Provides clearer visual evidence than the overlay alone, since the
+    raw mask can be independently verified against the original image.
+    """
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+    axes[0].imshow(image)
+    axes[0].set_title("Original")
+    axes[0].axis("off")
+
+    axes[1].imshow(mask, cmap="gray")
+    axes[1].set_title("Predicted Mask")
+    axes[1].axis("off")
+
+    axes[2].imshow(overlay)
+    axes[2].set_title("Overlay")
+    axes[2].axis("off")
+
+    plt.tight_layout()
+    if save_path is not None:
+        plt.savefig(save_path, dpi=100)
+    plt.show()
+    plt.close(fig)
+
