@@ -10,7 +10,7 @@ from data_pipeline.transforms import get_val_transforms
 from models.segformer import build_model
 from engine.inference_engine import InferenceEngine
 from utils.checkpoint import load_checkpoint
-from utils.visualization import overlay_mask
+from utils.visualization import overlay_mask_raw, show_original_mask_overlay
 from utils.logger import get_logger
 
 import matplotlib.pyplot as plt
@@ -46,18 +46,11 @@ def main() -> None:
 
     image, mask = engine.predict(Path(args.image_path))
 
-    import torch
-    image_tensor = torch.tensor(image / 255.0).permute(2, 0, 1)
-    mask_tensor = torch.tensor(mask)
-    overlay = overlay_mask(image_tensor, mask_tensor)
+    overlay = overlay_mask_raw(image, mask)
+    show_original_mask_overlay(image, mask, overlay, save_path=Path(args.output_path) if args.output_path else None)
 
-    plt.figure(figsize=(6, 6))
-    plt.imshow(overlay)
-    plt.axis("off")
     if args.output_path:
-        plt.savefig(args.output_path, dpi=100)
-        logger.info(f"Overlay saved to {args.output_path}")
-    plt.show()
+        logger.info(f"Result saved to {args.output_path}")
 
 
 if __name__ == "__main__":
