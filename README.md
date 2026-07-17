@@ -42,23 +42,74 @@ Clothing segmentation sits at the core of virtual try-on technology — but most
 
 ---
 
+## 📦 Pretrained Weights
+
+The pretrained **SegFormer-B0** checkpoint is available in two ways:
+
+### Option 1 — Use the checkpoint included in this repository
+
+If you clone or download this repository, the checkpoint is already located in:
+
+```text
+clothing_segmentation/
+└── checkpoints/
+    └── best_model_inference_only.pth
+```
+
+### Option 2 — Download the latest checkpoint from Hugging Face
+
+Download the checkpoint manually from the Hugging Face Hub:
+
+https://huggingface.co/UseItOrLoseIt/clothing-segmentation-segformer-b0
+
+
+
 ## 🗂️ Project Structure
 
-```
+```text
 clothing_segmentation/
-├── config.py
-├── train.py
-├── evaluate.py
-├── inference.py
-├── requirements.txt
+│
+├── config.py                    # Central configuration
+├── train.py                     # Training entry point
+├── evaluate.py                  # Model evaluation
+├── inference.py                 # Single-image inference
+├── requirements.txt             # Project dependencies
+├── README.md
+├── report.md                    # Technical report
 │
 ├── data_pipeline/
+│   ├── dataset.py               # Dataset loader
+│   ├── preprocessing.py         # Data preprocessing
+│   ├── rle.py                   # Run-Length Encoding utilities
+│   ├── split.py                 # Train/validation split
+│   └── transforms.py            # Albumentations pipeline
+│
 ├── models/
+│   └── segformer.py             # SegFormer-B0 implementation
+│
 ├── losses/
+│   ├── bce_loss.py              # Binary Cross Entropy loss
+│   ├── dice_loss.py             # Dice loss
+│   └── combined_loss.py         # BCE + Dice loss
+│
 ├── metrics/
+│   ├── dice.py                  # Dice Score
+│   ├── iou.py                   # Mean IoU
+│   └── pixel_accuracy.py        # Pixel Accuracy
+│
 ├── engine/
+│   ├── trainer.py               # Training loop
+│   ├── validator.py             # Validation pipeline
+│   └── inference_engine.py      # Inference utilities
+│
 ├── utils/
+│   ├── checkpoint.py            # Checkpoint saving/loading
+│   ├── logger.py                # Logging utilities
+│   ├── seed.py                  # Reproducibility utilities
+│   └── visualization.py         # Result visualization
+│
 └── checkpoints/
+    └── best_model_inference_only.pth
 ```
 
 > 💡 **Naming note:** the dataset module is called `data_pipeline/`, not `datasets/` — this avoids a real collision with the installed HuggingFace `datasets` library. Full story in [Challenges](#-challenges--lessons-learned).
